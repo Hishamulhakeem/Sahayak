@@ -1,1 +1,120 @@
-# Sahayak
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14-black" alt="Next.js">
+  <img src="https://img.shields.io/badge/Prisma-ORM-blue" alt="Prisma">
+  <img src="https://img.shields.io/badge/Gemini-AI-orange" alt="Gemini AI">
+  <img src="https://img.shields.io/badge/Vercel-Deployed-black" alt="Vercel">
+</p>
+
+# Sahayak - AI Teaching Assistant for Indian Classrooms
+
+**Sahayak** is a sophisticated Next.js 14 application designed to revolutionise Indian classrooms by providing a multi-agent AI framework for personalized, syllabus-aligned education. It empowers teachers to act as AI conductors while giving students an intelligent, highly personalized, on-demand tutor.
+
+## 🚀 Project Overview
+
+At its core, Sahayak restricts standard AI models (like Gemini) from hallucinating generalized responses by confining the AI's memory and knowledge base exclusively to teacher-approved lesson plans and syllabus data. 
+
+* **For Teachers**: A comprehensive dashboard to upload textbooks, PDFs, and syllabus data. Generate worksheets, extract key concepts, monitor student doubts in real-time, and identify class-wide weaknesses.
+* **For Students**: A localized, multi-lingual intelligent chat tutor tailored perfectly with an intelligent study plan based on their analytics and recent class lessons.
+
+## 🛠 Tech Stack
+- **Framework**: Next.js 14 (App Router)
+- **Database**: PostgreSQL (via Neon)
+- **ORM**: Prisma
+- **Authentication**: NextAuth.js
+- **AI Engine**: Google Gemini (via `@google/generative-ai`)
+- **Styling**: Tailwind CSS, shadcn/ui, framer-motion
+- **Object Storage**: AWS S3
+- **Monitoring**: Sentry
+
+## ✨ Features
+
+### Teacher Side
+- **Knowledge Base Uploads**: Securely digest textbooks/PDFs via S3 and vector DB workflows.
+- **Syllabus Generator**: Auto-generate MCQs, topic notes, and descriptive exams aligned with exact state syllabus.
+- **Student Monitoring**: Real-time stats on which students are engaging with the AI, the topics generating the most doubts, and automated evaluation metrics.
+- **Timetable Scheduling**: Create lesson trajectories directly tied to AI focus modes.
+
+### Student Side
+- **AI Chat Tutor**: Syllabus-bound virtual assistant with memory isolation per student.
+- **Dynamic Study Plan**: Tailored daily priorities emphasizing topics where the student showed weakness in recent quizzes.
+- **Lesson Viewer**: Beautiful markdown-heavy reader for consuming generated lesson notes.
+- **Progress Tracking**: Tracks mastery score for individual subjects.
+
+## 🧠 Multi-Agent Architecture
+Sahayak employs an Orchestrator pattern where the frontend calls a single endpoint (`/api/chat`), and the Orchestrator intelligently delegates to specialized sub-agents:
+- **Teacher Agent**: Creates content, ensures curriculum compliance.
+- **Student/Tutor Agent**: Answers queries strictly using the curriculum.
+- **Analytics Agent**: Summarizes chat history to extract 'weak spots' to feed the Study Plan.
+- **Memory Agent**: Safely captures interaction logs per user.
+
+## 🏁 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Neon PostgreSQL database
+- Google Gemini API Key
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/sahayak.git
+   cd sahayak
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**:
+   Copy `.env.example` to `.env` and fill the variables.
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Database Setup**:
+   Generate the Prisma client and push your PostgreSQL schema.
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev --name init
+   npm run db:seed
+   ```
+
+5. **Run the Development Server**:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:3000` with your browser.
+
+## 🔐 Environment Variables
+
+Variable | Description
+--- | ---
+`DATABASE_URL` | PostgreSQL connection string (e.g. Neon connection string).
+`NEXTAUTH_SECRET` | Used for NextAuth JWT encryption (`openssl rand -base64 32`).
+`NEXTAUTH_URL` | Primary URL of the app (`http://localhost:3000` for dev).
+`GEMINI_API_KEY` | Key from Google AI Studio.
+`AWS_ACCESS_KEY_ID` | Amazon S3 access key.
+`AWS_SECRET_ACCESS_KEY` | Amazon S3 secret.
+`AWS_REGION` | S3 bucket region.
+`AWS_BUCKET_NAME` | Name of your storage bucket for file uploads.
+`NEXT_PUBLIC_APP_URL` | Base URL used on the frontend.
+`NEXT_PUBLIC_SENTRY_DSN` | SDK hook for Sentry Error Tracking.
+
+## ☁️ Deployment
+
+1. Set up a Vercel project and link the repository.
+2. In Vercel Project Settings > Environment Variables, copy all from `.env`.
+3. Since SQLite is replaced with Neon Postgres, vercel deployments will execute cleanly.
+4. Ensure `npx prisma db push` or `prisma migrate deploy` runs in the build step via your vercel configurations.
+
+## 🤝 Contributing
+1. Fork the repo.
+2. Create a feature branch `git checkout -b feature/awesome`.
+3. Commit your changes `git commit -m 'Added awesome feature'`.
+4. Push to the branch `git push origin feature/awesome`.
+5. Open a Pull Request.
+
+## 📄 License
+This project is licensed under the MIT License.
